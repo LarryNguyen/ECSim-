@@ -1,0 +1,15 @@
+<config>
+  <interface hosts="ue" address="192.168.1.1" netmask="255.255.255.0" />
+  <interface hosts="SP1" address="192.168.2.41" netmask="255.255.255.0" />
+  <interface hosts="SP2" address="192.168.4.42" netmask="255.255.255.0" />
+  <interface hosts="RG" names="eth1" address="192.168.3.111" netmask="255.255.255.0" />
+  <interface hosts="RG" names="eth0" address="192.168.2.111" netmask="255.255.255.0" />
+  <interface hosts="RG" names="eth2" address="192.168.4.111" netmask="255.255.255.0" />
+
+  <route hosts="ue" destination="*" gateway="192.168.3.111" interface="wlan0"/>
+  <route hosts="SP1" destination="*" gateway="192.168.2.111" interface="eth0"/>
+  <route hosts="SP2" destination="*" gateway="192.168.4.111" interface="eth0"/>
+  <route hosts="RG" destination="192.168.1.0" gateway="*" netmask="255.255.255.0" interface="eth1"/>
+  <route hosts="RG" destination="192.168.2.0" gateway="*" netmask="255.255.255.0" interface="eth0"/>
+  <route hosts="RG" destination="192.168.4.0" gateway="*" netmask="255.255.255.0" interface="eth2"/>
+</config> 

@@ -1,0 +1,4 @@
+<config>
+  <edge-service hosts="RG" services="192.168.2.41"/>
+  <edge-service hosts="RG2" services="192.168.2.41"/>
+</config> 

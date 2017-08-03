@@ -15,13 +15,34 @@
 
 package mec_sim;
 
+import inet.applications.udpapp.UDPEdgeApp;
+import inet.examples.adhoc.hostautoconf.Host;
 import inet.networklayer.ipv4.IPv4ServiceTable;
 import inet.node.inet.Router;
+import inet.transportlayer.contract.IUDP;
+import inet.applications.contract.IUDPApp;
 
 module EdgeNode extends Router
 {
+    parameters:
+        int numUdpApps = default(0);
+        
     submodules:
-        iPv4ServiceTable: IPv4ServiceTable {
-            @display("p=157,21;is=s");
+        udpApp[numUdpApps]: <> like IUDPApp {
+            parameters:
+                @display("p=574,231,row,60");
         }
+
+        udpE: <udpType> like IUDP {
+            @display("p=452,231");
+        }
+    connections:
+        udpE.ipOut --> networkLayer.transportIn++;
+        udpE.ipIn <-- networkLayer.transportOut++;
+
+        for i=0..numUdpApps-1 {
+            udpApp[i].udpOut --> udpE.appIn++;
+            udpApp[i].udpIn <-- udpE.appOut++;
+        }
+
 }

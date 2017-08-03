@@ -67,23 +67,27 @@ network MEC
         RG: EdgeNode {
             @display("p=234,152");
         }
-//        serviceTable: IPv4ServiceTable {
-//            parameters:
-//                @display("p=38,96;is=s");
-//                serviceConfig = xmldoc("service.xml");
-//        }
+        //        serviceTable: IPv4ServiceTable {
+        //            parameters:
+        //                @display("p=38,96;is=s");
+        //                serviceConfig = xmldoc("service.xml");
+        //        }
         ap: AccessPoint {
             @display("p=162,214");
         }
         SP1: StandardHost {
-            @display("p=339,24;i=device/server");
+            @display("p=367,77;i=device/server");
         }
         SP2: StandardHost {
-            @display("p=396,232;i=device/server");
+            @display("p=367,215;i=device/server");
+        }
+        Enoma: StandardHost {
+            @display("p=234,24;i=device/server");
         }
 
     connections:
         SP1.ethg++ <--> C <--> RG.ethg++;
         ap.ethg++ <--> C <--> RG.ethg++;
         RG.ethg++ <--> C <--> SP2.ethg++;
+        Enoma.ethg++ <--> C <--> RG.ethg++;
 }

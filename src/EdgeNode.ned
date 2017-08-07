@@ -28,21 +28,21 @@ module EdgeNode extends Router
         int numUdpApps = default(0);
         
     submodules:
-        udpApp[numUdpApps]: <> like IUDPApp {
+        udpApp[numUdpApps]: <> like IUDPApp{
             parameters:
                 @display("p=574,231,row,60");
         }
 
-        udpE: <udpType> like IUDP {
+        udpE: <udpType> like IUDP if numUdpApps > 0 {
             @display("p=452,231");
         }
-    connections:
-        udpE.ipOut --> networkLayer.transportIn++;
-        udpE.ipIn <-- networkLayer.transportOut++;
-
+    connections allowunconnected:
+        if numUdpApps > 0 {
+            udpE.ipOut --> networkLayer.transportIn++;
+            udpE.ipIn <-- networkLayer.transportOut++;
+        }
         for i=0..numUdpApps-1 {
             udpApp[i].udpOut --> udpE.appIn++;
             udpApp[i].udpIn <-- udpE.appOut++;
         }
-
 }

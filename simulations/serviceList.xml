@@ -1,0 +1,4 @@
+<config>
+  <edge-service service="s1" ip="5.5.5.1"/>
+  <edge-service service="s2" ip="5.5.5.2"/>
+</config> 

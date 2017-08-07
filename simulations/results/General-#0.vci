@@ -1,38 +1,63 @@
                                                                 
 version 2
-run General-0-20170803-16:17:03-11660
+run General-0-20170807-23:13:47-2448
 attr configname General
-attr datetime 20170803-16:17:03
+attr datetime 20170807-23:13:47
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
-attr network MEC
-attr processid 11660
+attr network mec
+attr processid 2448
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
+param **.Core*.numUdpApps 2
+param **.Core*.udpApp[*].typename "\"UDPEdgeApp\""
+param **.Core*.udpApp[0].destPort 0
+param **.Core*.udpApp[0].localPort 1000
+param **.Core*.udpApp[0].messageLength 0B
+param **.Core*.udpApp[0].sendInterval 0s
+param **.Core*.udpApp[1].destAddresses "\"Enoma\""
+param **.Core*.udpApp[1].destPort 1001
+param **.Core*.udpApp[1].messageLength "100 bytes"
+param **.Core*.udpApp[1].sendInterval 1s
+param **.Edge*.numUdpApps 2
+param **.Edge*.udpApp[*].typename "\"UDPEdgeApp\""
+param **.Edge*.udpApp[0].destPort 0
+param **.Edge*.udpApp[0].localPort 1000
+param **.Edge*.udpApp[0].messageLength 0B
+param **.Edge*.udpApp[0].sendInterval 0s
+param **.Edge*.udpApp[1].destAddresses "\"Enoma\""
+param **.Edge*.udpApp[1].destPort 1001
+param **.Edge*.udpApp[1].messageLength "100 bytes"
+param **.Edge*.udpApp[1].sendInterval 1s
 param **.Enoma.numUdpApps 1
+param **.Enoma.udpApp[*].typename "\"UDPEdgeApp\""
+param **.Enoma.udpApp[0].destPort 0
 param **.Enoma.udpApp[0].isEnoma 1
 param **.Enoma.udpApp[0].localPort 1001
-param **.Enoma.udpApp[0].typename "\"UDPEdgeApp\""
-param **.RG.numUdpApps 2
-param **.RG.udpApp[0].destAddresses "\"Enoma\""
-param **.RG.udpApp[0].destPort 1001
-param **.RG.udpApp[0].messageLength "1300 bytes"
-param **.RG.udpApp[0].sendInterval 1s
-param **.RG.udpApp[0].typename "\"UDPEdgeApp\""
-param **.RG.udpApp[1].localPort 1000
-param **.RG.udpApp[1].typename "\"UDPEdgeApp\""
+param **.Enoma.udpApp[0].messageLength 0B
+param **.Enoma.udpApp[0].sendInterval 0s
+param **.RG*.numUdpApps 2
+param **.RG*.udpApp[*].typename "\"UDPEdgeApp\""
+param **.RG*.udpApp[0].destPort 0
+param **.RG*.udpApp[0].localPort 1000
+param **.RG*.udpApp[0].messageLength 0B
+param **.RG*.udpApp[0].sendInterval 0s
+param **.RG*.udpApp[1].destAddresses "\"Enoma\""
+param **.RG*.udpApp[1].destPort 1001
+param **.RG*.udpApp[1].messageLength "100 bytes"
+param **.RG*.udpApp[1].sendInterval 1s
 param **.SP1.numUdpApps 1
+param **.SP1.udpApp[*].typename "\"UDPSink\""
 param **.SP1.udpApp[0].localPort 1000
-param **.SP1.udpApp[0].typename "\"UDPSink\""
 param **.SP2.numUdpApps 1
+param **.SP2.udpApp[*].typename "\"UDPSink\""
 param **.SP2.udpApp[0].localPort 1000
-param **.SP2.udpApp[0].typename "\"UDPSink\""
 param **.ap.wlan[*].mac.address "\"10:00:00:00:00:00\""
 param **.arp.cacheTimeout 1s
 param **.autoConfigurator.interfaces "\"wlan0\""
@@ -49,7 +74,7 @@ param **.mgmt.frameCapacity 10
 param **.ue.**.mgmt.accessPointAddress "\"10:00:00:00:00:00\""
 param **.ue.numUdpApps 1
 param **.ue.udpApp[*].typename "\"UDPEdgeApp\""
-param **.ue.udpApp[0].destAddresses "\"SP1\""
+param **.ue.udpApp[0].destAddresses "\"SP2\""
 param **.ue.udpApp[0].destPort 1000
 param **.ue.udpApp[0].messageLength "1300 bytes"
 param **.ue.udpApp[0].sendInterval exponential(0.001s)
@@ -66,186 +91,138 @@ param **.wlan[*].radio.transmitter.headerBitLength 100b
 param **.wlan[*].radio.transmitter.power 2mW
 param *.ap*.**.mgmtType "\"Ieee80211MgmtAPSimplified\""
 param *.ap.wlan[0].radio.channelNumber 0
-param *.ue*.**.mgmtType "\"Ieee80211MgmtSTASimplified\""
+param *.mobile*.**.mgmtType "\"Ieee80211MgmtSTASimplified\""
 param *.ue.wlan[0].radio.channelNumber 0
 
-vector 14  MEC.ue.wlan[0].radio  radioMode:vector  ETV
-attr interpolationmode  sample-hold
-attr source  radioModeChanged
-attr title  "Radio mode, vector"
-vector 17  MEC.ue.wlan[0].radio  radioChannel:vector  ETV
-attr interpolationmode  sample-hold
-attr source  radioChannelChanged
-attr title  "Radio channel, vector"
-vector 105  MEC.ap.wlan[0].radio  radioMode:vector  ETV
-attr interpolationmode  sample-hold
-attr source  radioModeChanged
-attr title  "Radio mode, vector"
-vector 108  MEC.ap.wlan[0].radio  radioChannel:vector  ETV
-attr interpolationmode  sample-hold
-attr source  radioChannelChanged
-attr title  "Radio channel, vector"
-vector 15  MEC.ue.wlan[0].radio  receptionState:vector  ETV
-attr interpolationmode  sample-hold
-attr source  receptionStateChanged
-attr title  "Radio reception state, vector"
-vector 106  MEC.ap.wlan[0].radio  receptionState:vector  ETV
-attr interpolationmode  sample-hold
-attr source  receptionStateChanged
-attr title  "Radio reception state, vector"
-vector 5  MEC.ue.wlan[0].mac.dcf.channelAccess.contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 6  MEC.ue.wlan[0].mac.hcf.edca.edcaf[0].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 7  MEC.ue.wlan[0].mac.hcf.edca.edcaf[1].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 8  MEC.ue.wlan[0].mac.hcf.edca.edcaf[2].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 9  MEC.ue.wlan[0].mac.hcf.edca.edcaf[3].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 96  MEC.ap.wlan[0].mac.dcf.channelAccess.contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 97  MEC.ap.wlan[0].mac.hcf.edca.edcaf[0].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 98  MEC.ap.wlan[0].mac.hcf.edca.edcaf[1].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 99  MEC.ap.wlan[0].mac.hcf.edca.edcaf[2].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 100  MEC.ap.wlan[0].mac.hcf.edca.edcaf[3].contention  state:vector  ETV
-attr interpolationmode  none
-attr source  stateChanged
-attr title  "contention state, vector"
-vector 20  MEC.ue.udpApp[0]  sentPk:vector(packetBytes)  ETV
+vector 372  mec.ue.udpApp[0]  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 23  MEC.ue.udp  sentPk:vector(packetBytes)  ETV
+vector 375  mec.ue.udp  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 0  MEC.ue.networkLayer.arp  sentReq:vector  ETV
+vector 353  mec.ue.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
-vector 12  MEC.ue.wlan[0].mac  rcvdPkFromHL:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetReceivedFromUpper
-attr title  "packets received from higher layer, vector(packetBytes)"
-vector 11  MEC.ue.wlan[0].mac  sentDownPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetSentToLower
-attr title  "packets sent to lower layer, vector(packetBytes)"
-vector 16  MEC.ue.wlan[0].radio  transmissionState:vector  ETV
-attr interpolationmode  sample-hold
-attr source  transmissionStateChanged
-attr title  "Radio transmission state, vector"
-vector 104  MEC.ap.wlan[0].mac  rcvdPkFromLL:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetReceivedFromLower
-attr title  "packets received from lower layer, vector(packetBytes)"
-vector 101  MEC.ap.wlan[0].mac  passedUpPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetSentToUpper
-attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 103  MEC.ap.wlan[0].mac  rcvdPkFromHL:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetReceivedFromUpper
-attr title  "packets received from higher layer, vector(packetBytes)"
-vector 114  MEC.ap.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  rxPkFromHL
-attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 109  MEC.ap.eth[0].mac  txPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  txPk
-attr title  "packets transmitted, vector(packetBytes)"
-vector 46  MEC.RG.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  rxPkOk
-attr title  "packets received OK, vector(packetBytes)"
-vector 47  MEC.RG.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetSentToUpper
-attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 55  MEC.RG.eth[1].encap  decapPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  decapPk
-attr title  "packets decapsulated, vector(packetBytes)"
-vector 29  MEC.RG.networkLayer.arp  sentReply:vector  ETV
-attr title  "ARP replies sent, vector"
-vector 54  MEC.RG.eth[1].encap  encapPk:vector(packetBytes)  ETV
+vector 367  mec.ue.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 50  MEC.RG.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 363  mec.ue.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 102  MEC.ap.wlan[0].mac  sentDownPk:vector(packetBytes)  ETV
-attr interpolationmode  none
-attr source  packetSentToLower
-attr title  "packets sent to lower layer, vector(packetBytes)"
-vector 107  MEC.ap.wlan[0].radio  transmissionState:vector  ETV
-attr interpolationmode  sample-hold
-attr source  transmissionStateChanged
-attr title  "Radio transmission state, vector"
-vector 45  MEC.RG.eth[1].mac  txPk:vector(packetBytes)  ETV
+vector 358  mec.ue.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 110  MEC.ap.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 18  mec.Edge1.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 111  MEC.ap.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 19  mec.Edge1.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 13  MEC.ue.wlan[0].mac  rcvdPkFromLL:vector(packetBytes)  ETV
+vector 27  mec.Edge1.eth[1].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
-attr source  packetReceivedFromLower
-attr title  "packets received from lower layer, vector(packetBytes)"
-vector 10  MEC.ue.wlan[0].mac  passedUpPk:vector(packetBytes)  ETV
+attr source  decapPk
+attr title  "packets decapsulated, vector(packetBytes)"
+vector 1  mec.Edge1.networkLayer.arp  sentReply:vector  ETV
+attr title  "ARP replies sent, vector"
+vector 26  mec.Edge1.eth[1].encap  encapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  encapPk
+attr title  "packets encapsulated, vector(packetBytes)"
+vector 22  mec.Edge1.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkFromHL
+attr title  "packet bytes from higher layer, vector(packetBytes)"
+vector 17  mec.Edge1.eth[1].mac  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  txPk
+attr title  "packets transmitted, vector(packetBytes)"
+vector 359  mec.ue.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 360  mec.ue.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 92  MEC.RG.udpE  rcvdPk:vector(packetBytes)  ETV
+vector 368  mec.ue.eth[0].encap  decapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  decapPk
+attr title  "packets decapsulated, vector(packetBytes)"
+vector 0  mec.Edge1.networkLayer.arp  sentReq:vector  ETV
+attr title  "ARP request sent, vector"
+vector 14  mec.Edge1.eth[0].encap  encapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  encapPk
+attr title  "packets encapsulated, vector(packetBytes)"
+vector 10  mec.Edge1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkFromHL
+attr title  "packet bytes from higher layer, vector(packetBytes)"
+vector 5  mec.Edge1.eth[0].mac  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  txPk
+attr title  "packets transmitted, vector(packetBytes)"
+vector 103  mec.RG1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 104  mec.RG1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 112  mec.RG1.eth[0].encap  decapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  decapPk
+attr title  "packets decapsulated, vector(packetBytes)"
+vector 98  mec.RG1.networkLayer.arp  sentReply:vector  ETV
+attr title  "ARP replies sent, vector"
+vector 111  mec.RG1.eth[0].encap  encapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  encapPk
+attr title  "packets encapsulated, vector(packetBytes)"
+vector 107  mec.RG1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkFromHL
+attr title  "packet bytes from higher layer, vector(packetBytes)"
+vector 102  mec.RG1.eth[0].mac  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  txPk
+attr title  "packets transmitted, vector(packetBytes)"
+vector 6  mec.Edge1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 7  mec.Edge1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 15  mec.Edge1.eth[0].encap  decapPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  decapPk
+attr title  "packets decapsulated, vector(packetBytes)"
+vector 161  mec.RG1.udpE  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 93  MEC.RG.udpE  passedUpPk:vector(count)  ETV
+vector 162  mec.RG1.udpE  passedUpPk:vector(count)  ETV
 attr interpolationmode  none
 attr title  "packets passed up, vector(count)"
-vector 86  MEC.RG.udpApp[1]  rcvdPk:vector(packetBytes)  ETV
+vector 150  mec.RG1.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 89  MEC.RG.udpApp[1]  rcvdPkLifetime:vector  ETV
+vector 153  mec.RG1.udpApp[0]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 90  MEC.RG.udpApp[1]  rcvdPkSeqNo:vector  ETV
+vector 154  mec.RG1.udpApp[0]  rcvdPkSeqNo:vector  ETV
 attr interpolationmode  none
 attr source  appPkSeqNo(rcvdPk)
 attr title  "received packet sequence number, vector"
-vector 87  MEC.RG.udpApp[1]  throughput:vector  ETV
-attr source  throughput(rcvdPk)
-attr title  "throughput, vector"
-attr unit  bps

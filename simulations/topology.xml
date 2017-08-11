@@ -1,0 +1,8 @@
+<config>
+  <edge name="Edge1" net="192.168.1.0"/>
+  <edge name="Edge2" net="192.168.2.0"/>
+  <edge name="Edge3" net="192.168.3.0"/>
+  <RG name="RG1" net="Edge1,Edge2"/>
+  <RG name="RG2" net="Edge3"/>
+  <Core name="Core" net="RG1,RG2"/>
+</config>

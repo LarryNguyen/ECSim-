@@ -13,6 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+import inet.common.lifecycle.LifecycleController;
 import inet.networklayer.configurator.ipv4.IPv4NetworkConfigurator;
 import inet.networklayer.ipv4.RoutingTableRecorder;
 import inet.node.ethernet.EtherSwitch;
@@ -67,7 +68,7 @@ network mec
         //        @display("p=30,256");
         //}
         Edge1: EdgeNode {
-          	@display("p=214,272;i=device/antennatower");
+            @display("p=214,272;i=device/antennatower");
         }
 
         //ap: AccessPoint {
@@ -111,6 +112,9 @@ network mec
         }
         Sw: EtherSwitch {
             @display("p=462,85");
+        }
+        lifecycleController: LifecycleController {
+            @display("p=34,72");
         }
     connections:
         //ap.ethg++ <--> C <--> Edge1.ethg++; //edge1[0]

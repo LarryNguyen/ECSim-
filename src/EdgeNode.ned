@@ -19,6 +19,7 @@ import inet.applications.udpapp.UDPEdgeApp;
 import inet.examples.adhoc.hostautoconf.Host;
 import inet.networklayer.ipv4.IPv4ServiceTable;
 import inet.node.inet.Router;
+import inet.power.consumer.EdgeCloudEnergyConsumer;
 import inet.transportlayer.contract.IUDP;
 import inet.applications.contract.IUDPApp;
 
@@ -26,15 +27,18 @@ module EdgeNode extends Router
 {
     parameters:
         int numUdpApps = default(0);
-        
+
     submodules:
-        udpApp[numUdpApps]: <> like IUDPApp{
+        udpApp[numUdpApps]: <> like IUDPApp {
             parameters:
                 @display("p=574,231,row,60");
         }
 
         udpE: <udpType> like IUDP if numUdpApps > 0 {
             @display("p=452,231");
+        }
+        energyConsumer: EdgeCloudEnergyConsumer {
+            @display("p=109,100;is=s");
         }
     connections allowunconnected:
         if numUdpApps > 0 {

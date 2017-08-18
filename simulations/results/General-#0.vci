@@ -1,15 +1,15 @@
-                                                                
+file 3597672 1503039442                                         
 version 2
-run General-0-20170817-17:02:47-7920
+run General-0-20170818-15:53:55-17448
 attr configname General
-attr datetime 20170817-17:02:47
+attr datetime 20170818-15:53:55
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network mec
-attr processid 7920
+attr processid 17448
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -64,22 +64,28 @@ param **.RG*.udpApp[1].sendInterval 0s
 param **.RG*.udpApp[1].typename "\"UDPEnoma\""
 param **.SP1.numUdpApps 1
 param **.SP1.udpApp[*].typename "\"UDPEdgeApp\""
+param **.SP1.udpApp[0].cacheSize 5000
 param **.SP1.udpApp[0].destPort 1000
 param **.SP1.udpApp[0].enomaAddresses "\"Enoma\""
 param **.SP1.udpApp[0].enomaPort 1001
 param **.SP1.udpApp[0].isSP 1
 param **.SP1.udpApp[0].localPort 1000
 param **.SP1.udpApp[0].messageLength 0B
+param **.SP1.udpApp[0].mips 10
 param **.SP1.udpApp[0].sendInterval 0s
+param **.SP1.udpApp[0].size 10
 param **.SP2.numUdpApps 1
 param **.SP2.udpApp[*].typename "\"UDPEdgeApp\""
+param **.SP2.udpApp[0].cacheSize 0
 param **.SP2.udpApp[0].destPort 1000
 param **.SP2.udpApp[0].enomaAddresses "\"Enoma\""
 param **.SP2.udpApp[0].enomaPort 1001
 param **.SP2.udpApp[0].isSP 1
 param **.SP2.udpApp[0].localPort 1000
 param **.SP2.udpApp[0].messageLength 0B
+param **.SP2.udpApp[0].mips 20
 param **.SP2.udpApp[0].sendInterval 0s
+param **.SP2.udpApp[0].size 20
 param **.ap.wlan[*].mac.address "\"10:00:00:00:00:00\""
 param **.arp.cacheTimeout 1s
 param **.autoConfigurator.interfaces "\"wlan0\""
@@ -90,12 +96,14 @@ param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
 param **.constraintAreaMinZ 0m
 param **.displayEnergyStorages true
-param **.energyConsumer.consumptionInterval "uniform(5ms, 10ms)"
+param **.energyConsumer.consumptionInterval 1s
+param **.energyConsumer.consumptionPerMb 0.052
+param **.energyConsumer.consumptionPerMips 0.00019
 param **.energyConsumerType "\"StateBasedEpEnergyConsumer\""
 param **.energyManagement.nodeShutdownCapacity 0J
-param **.energyManagement.nodeStartCapacity 0.025J
+param **.energyManagement.nodeStartCapacity 1000J
 param **.energyManagementType "\"SimpleEpEnergyManagement\""
-param **.energyStorage.nominalCapacity 0.05J
+param **.energyStorage.nominalCapacity 1000J
 param **.energyStorageType "\"SimpleEpEnergyStorage\""
 param **.hasStatus true
 param **.mac.address "\"auto\""
@@ -120,6 +128,11 @@ param **.wlan[*].radio.transmitter.bitrate 2Mbps
 param **.wlan[*].radio.transmitter.carrierFrequency 2.4GHz
 param **.wlan[*].radio.transmitter.headerBitLength 100b
 param **.wlan[*].radio.transmitter.power 2mW
+param *.Edge*.energyGenerator.energySinkModule "\"^.energyStorage\""
+param *.Edge*.energyGenerator.generationInterval 1s
+param *.Edge*.energyGenerator.powerGeneration 50000W
+param *.Edge*.energyGenerator.sleepInterval 1s
+param *.Edge*.energyGeneratorType "\"AlternatingEpEnergyGenerator\""
 param *.Edge*.energyStorage.initialCapacity "uniform(0J, this.nominalCapacity)"
 param *.ap*.**.mgmtType "\"Ieee80211MgmtAPSimplified\""
 param *.ap.wlan[0].radio.channelNumber 0
@@ -130,7 +143,15 @@ vector 2  mec.Edge1.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 47  mec.Edge1.energyConsumer  powerConsumption:vector  ETV
+vector 3  mec.Edge1.energyGenerator  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 1  mec.Edge1.energyStorage  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 48  mec.Edge1.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
@@ -138,516 +159,667 @@ vector 0  mec.Edge1.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 50  mec.SP1.energyStorage  residualEnergyCapacity:vector  ETV
+vector 51  mec.SP1.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 80  mec.Enoma.energyStorage  residualEnergyCapacity:vector  ETV
+vector 81  mec.Enoma.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 110  mec.RG1.energyStorage  residualEnergyCapacity:vector  ETV
+vector 111  mec.RG1.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 179  mec.RG1.energyConsumer  powerConsumption:vector  ETV
+vector 180  mec.RG1.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 108  mec.RG1.energyStorage  powerConsumption:vector  ETV
+vector 109  mec.RG1.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 182  mec.Core.energyStorage  residualEnergyCapacity:vector  ETV
+vector 183  mec.Core.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 251  mec.Core.energyConsumer  powerConsumption:vector  ETV
+vector 252  mec.Core.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 180  mec.Core.energyStorage  powerConsumption:vector  ETV
+vector 181  mec.Core.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 254  mec.RG2.energyStorage  residualEnergyCapacity:vector  ETV
+vector 255  mec.RG2.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 311  mec.RG2.energyConsumer  powerConsumption:vector  ETV
+vector 312  mec.RG2.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 252  mec.RG2.energyStorage  powerConsumption:vector  ETV
+vector 253  mec.RG2.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 314  mec.Edge2.energyStorage  residualEnergyCapacity:vector  ETV
+vector 315  mec.Edge2.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 347  mec.Edge2.energyConsumer  powerConsumption:vector  ETV
+vector 316  mec.Edge2.energyGenerator  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 314  mec.Edge2.energyStorage  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 349  mec.Edge2.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 312  mec.Edge2.energyStorage  powerConsumption:vector  ETV
+vector 313  mec.Edge2.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 350  mec.Edge3.energyStorage  residualEnergyCapacity:vector  ETV
+vector 352  mec.Edge3.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 383  mec.Edge3.energyConsumer  powerConsumption:vector  ETV
+vector 353  mec.Edge3.energyGenerator  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 351  mec.Edge3.energyStorage  powerGeneration:vector  ETV
+attr interpolationmode  sample-hold
+attr source  powerGenerationChanged
+attr title  "Power generation, vector"
+vector 386  mec.Edge3.energyConsumer  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 348  mec.Edge3.energyStorage  powerConsumption:vector  ETV
+vector 350  mec.Edge3.energyStorage  powerConsumption:vector  ETV
 attr interpolationmode  sample-hold
 attr source  powerConsumptionChanged
 attr title  "Power consumption, vector"
-vector 386  mec.ue.energyStorage  residualEnergyCapacity:vector  ETV
+vector 389  mec.ue.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 416  mec.SP2.energyStorage  residualEnergyCapacity:vector  ETV
+vector 419  mec.SP2.energyStorage  residualEnergyCapacity:vector  ETV
 attr interpolationmode  linear
 attr source  residualEnergyCapacityChanged
 attr title  "Residual energy capacity, vector"
-vector 406  mec.ue.udpApp[0]  sentPk:vector(packetBytes)  ETV
+vector 409  mec.ue.udpApp[0]  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 409  mec.ue.udp  sentPk:vector(packetBytes)  ETV
+vector 412  mec.ue.udp  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 387  mec.ue.networkLayer.arp  sentReq:vector  ETV
+vector 390  mec.ue.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
-vector 401  mec.ue.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 404  mec.ue.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 397  mec.ue.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 400  mec.ue.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 392  mec.ue.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 395  mec.ue.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 21  mec.Edge1.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
+vector 22  mec.Edge1.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 22  mec.Edge1.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
+vector 23  mec.Edge1.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 30  mec.Edge1.eth[1].encap  decapPk:vector(packetBytes)  ETV
+vector 31  mec.Edge1.eth[1].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 4  mec.Edge1.networkLayer.arp  sentReply:vector  ETV
+vector 5  mec.Edge1.networkLayer.arp  sentReply:vector  ETV
 attr title  "ARP replies sent, vector"
-vector 29  mec.Edge1.eth[1].encap  encapPk:vector(packetBytes)  ETV
+vector 30  mec.Edge1.eth[1].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 25  mec.Edge1.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 26  mec.Edge1.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 20  mec.Edge1.eth[1].mac  txPk:vector(packetBytes)  ETV
+vector 21  mec.Edge1.eth[1].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 393  mec.ue.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 396  mec.ue.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 394  mec.ue.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 397  mec.ue.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 402  mec.ue.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 405  mec.ue.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 3  mec.Edge1.networkLayer.arp  sentReq:vector  ETV
+vector 4  mec.Edge1.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
-vector 17  mec.Edge1.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 18  mec.Edge1.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 13  mec.Edge1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 14  mec.Edge1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 8  mec.Edge1.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 9  mec.Edge1.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 117  mec.RG1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 118  mec.RG1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 118  mec.RG1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 119  mec.RG1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 126  mec.RG1.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 127  mec.RG1.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 112  mec.RG1.networkLayer.arp  sentReply:vector  ETV
+vector 113  mec.RG1.networkLayer.arp  sentReply:vector  ETV
 attr title  "ARP replies sent, vector"
-vector 125  mec.RG1.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 126  mec.RG1.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 121  mec.RG1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 122  mec.RG1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 116  mec.RG1.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 117  mec.RG1.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 9  mec.Edge1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 10  mec.Edge1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 10  mec.Edge1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 11  mec.Edge1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 18  mec.Edge1.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 19  mec.Edge1.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 111  mec.RG1.networkLayer.arp  sentReq:vector  ETV
+vector 112  mec.RG1.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
-vector 149  mec.RG1.eth[2].encap  encapPk:vector(packetBytes)  ETV
+vector 150  mec.RG1.eth[2].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 145  mec.RG1.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 146  mec.RG1.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 140  mec.RG1.eth[2].mac  txPk:vector(packetBytes)  ETV
+vector 141  mec.RG1.eth[2].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 213  mec.Core.eth[2].mac  rxPkOk:vector(packetBytes)  ETV
+vector 214  mec.Core.eth[2].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 214  mec.Core.eth[2].mac  passedUpPk:vector(packetBytes)  ETV
+vector 215  mec.Core.eth[2].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 222  mec.Core.eth[2].encap  decapPk:vector(packetBytes)  ETV
+vector 223  mec.Core.eth[2].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 184  mec.Core.networkLayer.arp  sentReply:vector  ETV
+vector 185  mec.Core.networkLayer.arp  sentReply:vector  ETV
 attr title  "ARP replies sent, vector"
-vector 221  mec.Core.eth[2].encap  encapPk:vector(packetBytes)  ETV
+vector 222  mec.Core.eth[2].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 217  mec.Core.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 218  mec.Core.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 212  mec.Core.eth[2].mac  txPk:vector(packetBytes)  ETV
+vector 213  mec.Core.eth[2].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 141  mec.RG1.eth[2].mac  rxPkOk:vector(packetBytes)  ETV
+vector 142  mec.RG1.eth[2].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 142  mec.RG1.eth[2].mac  passedUpPk:vector(packetBytes)  ETV
+vector 143  mec.RG1.eth[2].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 150  mec.RG1.eth[2].encap  decapPk:vector(packetBytes)  ETV
+vector 151  mec.RG1.eth[2].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 183  mec.Core.networkLayer.arp  sentReq:vector  ETV
+vector 184  mec.Core.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
-vector 209  mec.Core.eth[1].encap  encapPk:vector(packetBytes)  ETV
+vector 210  mec.Core.eth[1].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 205  mec.Core.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 206  mec.Core.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 200  mec.Core.eth[1].mac  txPk:vector(packetBytes)  ETV
+vector 201  mec.Core.eth[1].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 445  mec.Sw.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 448  mec.Sw.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 446  mec.Sw.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 449  mec.Sw.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 460  mec.Sw.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 463  mec.Sw.eth[1].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 471  mec.Sw.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 474  mec.Sw.eth[2].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 455  mec.Sw.eth[1].mac  txPk:vector(packetBytes)  ETV
+vector 458  mec.Sw.eth[1].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 466  mec.Sw.eth[2].mac  txPk:vector(packetBytes)  ETV
+vector 469  mec.Sw.eth[2].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 57  mec.SP1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 58  mec.SP1.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 58  mec.SP1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 59  mec.SP1.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 423  mec.SP2.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 426  mec.SP2.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 424  mec.SP2.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 427  mec.SP2.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 66  mec.SP1.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 67  mec.SP1.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 432  mec.SP2.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 435  mec.SP2.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 52  mec.SP1.networkLayer.arp  sentReply:vector  ETV
+vector 53  mec.SP1.networkLayer.arp  sentReply:vector  ETV
 attr title  "ARP replies sent, vector"
-vector 65  mec.SP1.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 66  mec.SP1.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 61  mec.SP1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 62  mec.SP1.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 56  mec.SP1.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 57  mec.SP1.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 456  mec.Sw.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
+vector 459  mec.Sw.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 457  mec.Sw.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
+vector 460  mec.Sw.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 449  mec.Sw.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 452  mec.Sw.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 444  mec.Sw.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 447  mec.Sw.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 201  mec.Core.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
+vector 202  mec.Core.eth[1].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 202  mec.Core.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
+vector 203  mec.Core.eth[1].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 210  mec.Core.eth[1].encap  decapPk:vector(packetBytes)  ETV
+vector 211  mec.Core.eth[1].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 74  mec.SP1.udp  rcvdPk:vector(packetBytes)  ETV
+vector 75  mec.SP1.udp  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 75  mec.SP1.udp  passedUpPk:vector(count)  ETV
+vector 76  mec.SP1.udp  passedUpPk:vector(count)  ETV
 attr interpolationmode  none
 attr title  "packets passed up, vector(count)"
-vector 68  mec.SP1.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
+vector 69  mec.SP1.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 71  mec.SP1.udpApp[0]  rcvdPkLifetime:vector  ETV
+vector 72  mec.SP1.udpApp[0]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 72  mec.SP1.udpApp[0]  rcvdPkSeqNo:vector  ETV
+vector 73  mec.SP1.udpApp[0]  rcvdPkSeqNo:vector  ETV
 attr interpolationmode  none
 attr source  appPkSeqNo(rcvdPk)
 attr title  "received packet sequence number, vector"
-vector 73  mec.SP1.udp  sentPk:vector(packetBytes)  ETV
+vector 74  mec.SP1.udp  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 197  mec.Core.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 198  mec.Core.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 193  mec.Core.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 194  mec.Core.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 188  mec.Core.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 189  mec.Core.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 87  mec.Enoma.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 88  mec.Enoma.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 88  mec.Enoma.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 89  mec.Enoma.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 96  mec.Enoma.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 97  mec.Enoma.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 82  mec.Enoma.networkLayer.arp  sentReply:vector  ETV
+vector 83  mec.Enoma.networkLayer.arp  sentReply:vector  ETV
 attr title  "ARP replies sent, vector"
-vector 95  mec.Enoma.eth[0].encap  encapPk:vector(packetBytes)  ETV
+vector 96  mec.Enoma.eth[0].encap  encapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  encapPk
 attr title  "packets encapsulated, vector(packetBytes)"
-vector 91  mec.Enoma.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
+vector 92  mec.Enoma.eth[0].mac  rxPkFromHL:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkFromHL
 attr title  "packet bytes from higher layer, vector(packetBytes)"
-vector 86  mec.Enoma.eth[0].mac  txPk:vector(packetBytes)  ETV
+vector 87  mec.Enoma.eth[0].mac  txPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  txPk
 attr title  "packets transmitted, vector(packetBytes)"
-vector 189  mec.Core.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
+vector 190  mec.Core.eth[0].mac  rxPkOk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rxPkOk
 attr title  "packets received OK, vector(packetBytes)"
-vector 190  mec.Core.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
+vector 191  mec.Core.eth[0].mac  passedUpPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  packetSentToUpper
 attr title  "packets passed to higher layer, vector(packetBytes)"
-vector 198  mec.Core.eth[0].encap  decapPk:vector(packetBytes)  ETV
+vector 199  mec.Core.eth[0].encap  decapPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  decapPk
 attr title  "packets decapsulated, vector(packetBytes)"
-vector 104  mec.Enoma.udp  rcvdPk:vector(packetBytes)  ETV
+vector 105  mec.Enoma.udp  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 105  mec.Enoma.udp  passedUpPk:vector(count)  ETV
+vector 106  mec.Enoma.udp  passedUpPk:vector(count)  ETV
 attr interpolationmode  none
 attr title  "packets passed up, vector(count)"
-vector 98  mec.Enoma.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
+vector 99  mec.Enoma.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 101  mec.Enoma.udpApp[0]  rcvdPkLifetime:vector  ETV
+vector 102  mec.Enoma.udpApp[0]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 410  mec.ue.udp  rcvdPk:vector(packetBytes)  ETV
+vector 413  mec.ue.udp  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 411  mec.ue.udp  passedUpPk:vector(count)  ETV
+vector 414  mec.ue.udp  passedUpPk:vector(count)  ETV
 attr interpolationmode  none
 attr title  "packets passed up, vector(count)"
-vector 404  mec.ue.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
+vector 407  mec.ue.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 407  mec.ue.udpApp[0]  rcvdPkLifetime:vector  ETV
+vector 410  mec.ue.udpApp[0]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 408  mec.ue.udpApp[0]  rcvdPkSeqNo:vector  ETV
+vector 411  mec.ue.udpApp[0]  rcvdPkSeqNo:vector  ETV
 attr interpolationmode  none
 attr source  appPkSeqNo(rcvdPk)
 attr title  "received packet sequence number, vector"
-vector 69  mec.SP1.udpApp[0]  throughput:vector  ETV
-attr source  throughput(rcvdPk)
-attr title  "throughput, vector"
-attr unit  bps
-vector 99  mec.Enoma.udpApp[0]  throughput:vector  ETV
-attr source  throughput(rcvdPk)
-attr title  "throughput, vector"
-attr unit  bps
-vector 405  mec.ue.udpApp[0]  throughput:vector  ETV
-attr source  throughput(rcvdPk)
-attr title  "throughput, vector"
-attr unit  bps
-vector 103  mec.Enoma.udp  sentPk:vector(packetBytes)  ETV
+vector 104  mec.Enoma.udp  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 43  mec.Edge1.udpE  rcvdPk:vector(packetBytes)  ETV
+vector 408  mec.ue.udpApp[0]  throughput:vector  ETV
+attr source  throughput(rcvdPk)
+attr title  "throughput, vector"
+attr unit  bps
+vector 44  mec.Edge1.udpE  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 44  mec.Edge1.udpE  passedUpPk:vector(count)  ETV
+vector 45  mec.Edge1.udpE  passedUpPk:vector(count)  ETV
 attr interpolationmode  none
 attr title  "packets passed up, vector(count)"
-vector 37  mec.Edge1.udpApp[1]  rcvdPk:vector(packetBytes)  ETV
+vector 38  mec.Edge1.udpApp[1]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 38  mec.Edge1.udpApp[1]  throughput:vector  ETV
+vector 39  mec.Edge1.udpApp[1]  throughput:vector  ETV
 attr source  throughput(rcvdPk)
 attr title  "throughput, vector"
 attr unit  bps
-vector 40  mec.Edge1.udpApp[1]  rcvdPkLifetime:vector  ETV
+vector 41  mec.Edge1.udpApp[1]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 32  mec.Edge1.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
+vector 33  mec.Edge1.udpApp[0]  rcvdPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  rcvdPk
 attr title  "packets received, vector(packetBytes)"
-vector 33  mec.Edge1.udpApp[0]  throughput:vector  ETV
+vector 34  mec.Edge1.udpApp[0]  throughput:vector  ETV
 attr source  throughput(rcvdPk)
 attr title  "throughput, vector"
 attr unit  bps
-vector 35  mec.Edge1.udpApp[0]  rcvdPkLifetime:vector  ETV
+vector 36  mec.Edge1.udpApp[0]  rcvdPkLifetime:vector  ETV
 attr interpolationmode  none
 attr source  messageAge(rcvdPk)
 attr title  "received packet lifetime, vector"
 attr unit  s
-vector 36  mec.Edge1.udpApp[0]  rcvdPkSeqNo:vector  ETV
+vector 37  mec.Edge1.udpApp[0]  rcvdPkSeqNo:vector  ETV
 attr interpolationmode  none
 attr source  appPkSeqNo(rcvdPk)
 attr title  "received packet sequence number, vector"
-vector 42  mec.Edge1.udpE  sentPk:vector(packetBytes)  ETV
+vector 43  mec.Edge1.udpE  sentPk:vector(packetBytes)  ETV
 attr interpolationmode  none
 attr source  sentPk
 attr title  "packets sent, vector(packetBytes)"
-vector 81  mec.Enoma.networkLayer.arp  sentReq:vector  ETV
+vector 82  mec.Enoma.networkLayer.arp  sentReq:vector  ETV
 attr title  "ARP request sent, vector"
+vector 391  mec.ue.networkLayer.arp  sentReply:vector  ETV
+attr title  "ARP replies sent, vector"
+0	29854 89 0 99696 0 4 5 0 260.5219 1042.0876 271486.64151844
+1	29943 73 0 99695 0 4 5 0 50000 150000 7500000000
+2	30016 16662 0 105371 0 4.25311149471 546 548.81350230426 1000 489495.92421476 448364637.9833
+3	46678 73 0 99695 0 4 5 0 50000 150000 7500000000
+4	46751 50 118 99884 0.001979744212 4.005330103392 2 1 1 2 2
+5	46801 168 100 83474 0.001865464212 3.30004102 7 1 1 7 7
+9	46969 2598 123 83479 0.001985504212 3.30004678 94 64 1346 121396 163070824
+10	49567 3708 133 104260 0.001991464212 4.20001758 136 64 1346 124084 163242856
+11	53275 3708 133 104260 0.001991464212 4.20001758 136 64 1346 124084 163242856
+14	56983 2692 121 83477 0.001979744212 3.30004102 94 64 1346 121396 163070824
+18	59675 2692 120 83476 0.001979744212 3.30004102 94 28 1328 119632 158725696
+19	62367 3708 134 104261 0.001991464212 4.20001758 136 28 1328 120850 158761018
+21	66075 125428 105 105363 0.001871224212 4.252883914315 4194 64 1346 5638714 7589298804
+22	191503 125423 97 105353 0.001865464212 4.252775594315 4194 64 1346 5638714 7589298804
+23	316926 125423 97 105353 0.001865464212 4.252775594315 4194 64 1346 5638714 7589298804
+26	442349 125427 103 105361 0.001865464212 4.252775594315 4194 64 1346 5638714 7589298804
+30	567776 125427 102 105360 0.001865464212 4.252775594315 4194 28 1328 5563132 7387657296
+31	693203 125423 98 105354 0.001865464212 4.252775594315 4194 28 1328 5563132 7387657296
+33	818626 122692 9661 105357 0.101014393021 4.252775594315 4099 1300 1300 5328700 6927310000
+34	941318 1541 9661 104805 0.1 4.220649909911 43 0 11778779.859133 432834515.55592 4.4839518853459e+015
+36	942859 148970 9661 105357 0.101014393021 4.252775594315 4099 0.00010842 0.00033927767 0.47114476109999 5.6306218015529e-005
+37	1091829 121772 9661 105357 0.101014393021 4.252775594315 4099 90 4188 8767761 24493455629
+38	1213601 971 9642 104264 0.100154304619 4.20001758 42 1 1 42 42
+39	1214572 706 9642 104264 0.1 4.2 42 0 80 3280 262400
+41	1215278 1353 9642 104264 0.100154304619 4.20001758 42 1.758e-005 0.000154304619 0.000980564619 4.3898581444735e-008
+43	1216631 122692 9662 105358 0.101014393021 4.252775594315 4099 1308 1308 5361492 7012831536
+44	1339323 123663 9641 105356 0.100154304619 4.252775594315 4141 9 1308 5361870 7012834938
+45	1462986 122682 9641 105356 0.100154304619 4.252775594315 4141 1 4141 8576011 23678366371
+48	1585668 94 0 99696 0 4 5 0 260.5219 1042.0876 271486.64151844
+51	1585762 11480 0 105371 0 4.25311149471 390 1000 1000 390000 390000000
+53	1597242 25 193 193 0.002231744212 0.002231744212 1 1 1 1 1
+57	1597267 5126 201 9549 0.002237504212 0.099835504619 181 64 1346 134344 164976976
+58	1602393 2621 187 9484 0.002231744212 0.099700624619 91 64 1346 121204 163058536
+59	1605014 2621 187 9484 0.002231744212 0.099700624619 91 64 1346 121204 163058536
+62	1607635 5126 197 9497 0.002231744212 0.099700624619 181 64 1346 134344 164976976
+66	1612761 5126 196 9495 0.002231744212 0.099700624619 181 28 1328 131068 160197904
+67	1617887 2621 189 9486 0.002231744212 0.099700624619 91 28 1328 119548 158723344
+69	1620508 2595 230 9489 0.002460304212 0.099700624619 90 1300 1300 117000 152100000
+72	1623103 3085 230 9489 0.002460304212 0.099700624619 90 0.0005421 0.000641979249 0.049332358084 2.7078846842654e-005
+73	1626188 2405 230 9489 0.002460304212 0.099700624619 90 0 89 4005 238965
+74	1628593 5100 231 9491 0.002460304212 0.099700624619 180 108 1308 127440 155027520
+75	1633693 2595 229 9488 0.002460304212 0.099700624619 90 1308 1308 117720 153977760
+76	1636288 2406 229 9488 0.002460304212 0.099700624619 90 1 90 4095 247065
+81	1638694 11480 0 105371 0 4.25311149471 390 1000 1000 390000 390000000
+82	1650174 48 32916 83411 1.1 3.3 3 1 1 3 3
+83	1650222 25 277 277 0.002696284212 0.002696284212 1 1 1 1 1
+87	1650247 1107 282 104245 0.002702044212 4.20000576 46 64 64 2944 188416
+88	1651354 2604 274 83425 0.002696284212 3.30001172 94 64 146 13396 1934824
+89	1653958 2604 274 83425 0.002696284212 3.30001172 94 64 146 13396 1934824
+92	1656562 805 280 104244 0.002696284212 4.2 46 64 64 2944 188416
+96	1657367 805 279 104243 0.002696284212 4.2 46 28 29 1330 38458
+97	1658172 2604 275 83426 0.002696284212 3.30001172 94 28 128 11632 1477696
+99	1660776 2506 295 9588 0.002714564212 0.099956444619 90 100 100 9000 900000
+102	1663282 3230 295 9588 0.002714564212 0.099956444619 90 0.00024254 0.00025582 0.021957173839 5.3583381210004e-006
+104	1666512 707 9591 104241 0.1 4.2 42 9 9 378 3402
+105	1667219 2596 294 9587 0.002714564212 0.099956444619 90 108 108 9720 1049760
+106	1669815 2497 294 9587 0.002714564212 0.099956444619 90 1 90 4095 247065
+109	1672312 71 0 99697 0 4 5 0 0 0 0
+111	1672383 11942 0 105371 0 4.25311149471 394 1000 1000 394000 394000000
+112	1684325 98 145 83460 0.002099884212 3.30003516 4 1 1 4 4
+113	1684423 98 127 83444 0.001985604212 3.30002344 4 1 1 4 4
+117	1684521 3844 132 104259 0.001991364212 4.20001748 136 64 1346 124084 163242856
+118	1688365 2786 124 83480 0.001985604212 3.30004688 94 64 1346 121396 163070824
+119	1691151 2786 124 83480 0.001985604212 3.30004688 94 64 1346 121396 163070824
+122	1693937 3843 130 104257 0.001985604212 4.20001172 136 64 1346 124084 163242856
+126	1697780 3843 129 104256 0.001985604212 4.20001172 136 28 1328 120850 158761018
+127	1701623 2786 125 83481 0.001985604212 3.30004688 94 28 1328 119632 158725696
+141	1704409 2783 150 83449 0.002105644212 3.3000292 94 64 1346 121396 163070824
+142	1707192 3843 160 104253 0.002111604212 4.20001172 136 64 1346 124084 163242856
+143	1711035 3843 160 104253 0.002111604212 4.20001172 136 64 1346 124084 163242856
+146	1714878 2786 148 83447 0.002099884212 3.30002344 94 64 1346 121396 163070824
+150	1717664 2786 147 83446 0.002099884212 3.30002344 94 28 1328 119632 158725696
+151	1720450 3843 161 104254 0.002111604212 4.20001172 136 28 1328 120850 158761018
+180	1724293 71 0 99697 0 4 5 0 0 0 0
+181	1724364 71 0 99698 0 4 5 0 0 0 0
+183	1724435 11942 0 105371 0 4.25311149471 394 1000 1000 394000 394000000
+184	1736377 124 171 83435 0.002220024212 3.30001758 5 1 1 5 5
+185	1736501 98 154 83419 0.002105744212 3.30000586 4 1 1 4 4
+189	1736599 2698 272 83424 0.002696184212 3.30001162 94 64 146 13396 1934824
+190	1739297 1153 283 104246 0.002702144212 4.20000586 46 64 64 2944 188416
+191	1740450 1153 283 104246 0.002702144212 4.20000586 46 64 64 2944 188416
+194	1741603 2698 270 83422 0.002690424212 3.30000586 94 64 146 13396 1934824
+198	1744301 2697 269 83421 0.002690424212 3.30000586 94 28 128 11632 1477696
+199	1746998 1153 284 104247 0.002702144212 4.20000586 46 28 29 1330 38458
+201	1748151 2711 178 9458 0.002225784212 0.099592104619 91 64 1346 121204 163058536
+202	1750862 5307 208 9577 0.002243464212 0.099944024619 181 64 1346 134344 164976976
+203	1756169 5307 208 9577 0.002243464212 0.099944024619 181 64 1346 134344 164976976
+206	1761476 2711 174 9412 0.002220024212 0.099483784619 91 64 1346 121204 163058536
+210	1764187 2711 173 9411 0.002220024212 0.099483784619 91 28 1328 119548 158723344
+211	1766898 5307 209 9578 0.002243464212 0.099944024619 181 28 1328 131068 160197904
+213	1772205 3843 159 104252 0.002111504212 4.20001162 136 64 1346 124084 163242856
+214	1776048 2783 151 83450 0.002105744212 3.3000293 94 64 1346 121396 163070824
+215	1778831 2783 151 83450 0.002105744212 3.3000293 94 64 1346 121396 163070824
+218	1781614 3835 157 104250 0.002105744212 4.20000586 136 64 1346 124084 163242856
+222	1785449 3835 156 104249 0.002105744212 4.20000586 136 28 1328 120850 158761018
+223	1789284 2783 152 83451 0.002105744212 3.3000293 94 28 1328 119632 158725696
+252	1792067 71 0 99698 0 4 5 0 0 0 0
+253	1792138 71 0 99699 0 4 5 0 0 0 0
+255	1792209 11942 0 105371 0 4.25311149471 394 1000 1000 394000 394000000
+312	1804151 71 0 99699 0 4 5 0 0 0 0
+313	1804222 71 0 99701 0 4 5 0 0 0 0
+314	1804293 83 0 99700 0 4 5 0 50000 150000 7500000000
+315	1804376 13394 0 105371 0 4.25311149471 435 592.8446163889 1000 409690.85006501 392501515.24548
+316	1817770 83 0 99700 0 4 5 0 50000 150000 7500000000
+349	1817853 71 0 99701 0 4 5 0 0 0 0
+350	1817924 71 0 99703 0 4 5 0 0 0 0
+351	1817995 83 0 99702 0 4 5 0 50000 150000 7500000000
+352	1818078 13072 0 105371 0 4.25311149471 423 715.18936497159 1000 407948.08749261 396135372.68212
+353	1831150 83 0 99702 0 4 5 0 50000 150000 7500000000
+386	1831233 71 0 99703 0 4 5 0 0 0 0
+389	1831304 11870 0 105371 0 4.25311149471 390 1000 1000 390000 390000000
+390	1843174 109 92 76411 0.001859604212 3.005224500416 4 1 1 4 4
+391	1843283 28 99893 99893 4.005335963392 4.005335963392 1 1 1 1 1
+395	1843311 129617 96 105352 0.001865364212 4.252775494315 4194 64 1346 5638714 7589298804
+396	1972928 129622 106 105364 0.001871324212 4.252884014315 4194 64 1346 5638714 7589298804
+397	2102550 129622 106 105364 0.001871324212 4.252884014315 4194 64 1346 5638714 7589298804
+400	2232172 129620 95 105351 0.001859604212 4.252667174315 4194 64 1346 5638714 7589298804
+404	2361792 129619 94 105350 0.001859604212 4.252667174315 4194 28 1328 5563132 7387657296
+405	2491411 129623 107 105365 0.001871324212 4.252884014315 4194 28 1328 5563132 7387657296
+407	2621034 129480 320 105368 0.003002404212 4.252884014315 4189 1300 1300 5445700 7079410000
+408	2750514 1590 9628 104816 0.1 4.220758329911 43 8528000 11778779.859133 442181651.00292 4.5716636214415e+015
+409	2752104 129507 89 105370 0.001859604212 4.25311149471 4190 1300 1300 5447000 7081100000
+410	2881611 156253 320 105368 0.003002404212 4.252884014315 4189 0.00021684 0.001197359249 1.013808273023 0.00031393907938134
+411	3037864 128370 320 105368 0.003002404212 4.252884014315 4189 0 4188 8771766 24493694594
+412	3166234 129507 91 105371 0.001859604212 4.25311149471 4190 1308 1308 5480520 7168520160
+413	3295741 129480 319 105367 0.003002404212 4.252884014315 4189 1308 1308 5479212 7166809296
+414	3425221 128373 319 105367 0.003002404212 4.252884014315 4189 1 4189 8775955 24511242315
+419	3553594 11870 0 105371 0 4.25311149471 390 1000 1000 390000 390000000
+426	3565464 27 188 188 0.002231744212 0.002231744212 1 64 64 64 4096
+427	3565491 27 188 188 0.002231744212 0.002231744212 1 64 64 64 4096
+435	3565518 27 190 190 0.002231744212 0.002231744212 1 28 28 28 784
+447	3565545 5307 207 9576 0.002243364212 0.099943924619 181 64 1346 134344 164976976
+448	3570852 2711 179 9459 0.002225884212 0.099592204619 91 64 1346 121204 163058536
+449	3573563 2711 179 9459 0.002225884212 0.099592204619 91 64 1346 121204 163058536
+452	3576274 5307 204 9552 0.002237604212 0.099835604619 181 64 1346 134344 164976976
+458	3581581 2712 185 9483 0.002231644212 0.099700524619 91 64 1346 121204 163058536
+459	3584293 5307 202 9550 0.002237604212 0.099835604619 181 64 1346 134344 164976976
+460	3589600 5307 202 9550 0.002237604212 0.099835604619 181 64 1346 134344 164976976
+463	3594907 2711 181 9462 0.002225884212 0.099592204619 91 64 1346 121204 163058536
+469	3597618 27 186 186 0.002231644212 0.002231644212 1 64 64 64 4096
+474	3597645 27 182 182 0.002225884212 0.002225884212 1 64 64 64 4096

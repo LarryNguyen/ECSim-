@@ -29,13 +29,14 @@ import inet.node.wireless.AccessPoint;
 import inet.common.misc.ThruputMeteringChannel;
 import inet.networklayer.ipv4.IPv4ServiceTable;
 import mec_sim.EdgeNode;
+import inet.node.ethernet.Eth100M;
 
 network mec
 {
     parameters:
-        int numHosts = 0;
-        //**.mgmt.numChannels = 1;
-        @display("bgb=699,414");
+        int numHosts = 10;
+        **.mgmt.numChannels = 1;
+        @display("bgb=699,481");
     types:
         channel C100 extends DatarateChannel
         {
@@ -53,9 +54,6 @@ network mec
             parameters:
                 @display("p=46,24");
         }
-        //mobile: WirelessHost {
-        //    @display("r=,,#707070;p=129,394");
-        //}
         configurator: IPv4NetworkConfigurator {
             parameters:
                 config = xmldoc("config2.xml");
@@ -71,9 +69,6 @@ network mec
             @display("p=214,272;i=device/antennatower");
         }
 
-        //ap: AccessPoint {
-        //    @display("p=143,350");
-        //}
         SP1: StandardHost {
             @display("p=405,24;i=device/server");
         }
@@ -96,14 +91,13 @@ network mec
         Edge3: EdgeNode {
             @display("p=573,231;i=device/antennatower");
         }
-        ue: StandardHost {
-            @display("p=214,394;i=device/cellphone");
+        ue[numHosts]: StandardHost {
+            //@display("p=55,391,r;i=device/cellphone");
+            @display("is=s;p=,r;i=device/cellphone");
         }
-        //        serviceTable: IPv4ServiceTable {
-        //            parameters:
-        //                @display("p=38,96;is=s");
-        //                serviceConfig = xmldoc("service.xml");
-        //        }
+		//ue: WirelessHost {
+        //    @display("r=,,#707070;p=129,394");
+        //}
         //ap: AccessPoint {
         //    @display("p=143,350");
         //}
@@ -116,8 +110,17 @@ network mec
         lifecycleController: LifecycleController {
             @display("p=34,72");
         }
+        //test: StandardHost {
+        //    @display("p=138,272;i=device/server");
+        //}
+        //r1: Router {
+        //    @display("p=208,332");
+        //}
+        sw1: EtherSwitch {
+            @display("p=83,388");
+        }
     connections:
-        //ap.ethg++ <--> C <--> Edge1.ethg++; //edge1[0]
+
         Edge1.ethg++ <--> C <--> RG1.ethg++; //edge1[1] - RG1[0]
         Edge2.ethg++ <--> C <--> RG1.ethg++; //edge2[0] - RG1[1]
         Enoma.ethg++ <--> C <--> Core.ethg++; //Enoma[0] - Core[0]
@@ -126,7 +129,14 @@ network mec
         RG2.ethg++ <--> C <--> Core.ethg++; //RG2[0] - Core[3]
         RG1.ethg++ <--> C <--> RG2.ethg++; //RG1[3] - RG2[1]
         RG2.ethg++ <--> C <--> Edge3.ethg++; //RG2[2] - Edge3[0]
-        Edge1.ethg++ <--> C <--> ue.ethg++; //edge1[1] - RG1[0]
+        Edge1.ethg++ <--> C <--> sw1.ethg++;
+        for i=0..numHosts-1 {
+            sw1.ethg++ <--> C <--> ue[i].ethg++; //edge1[1] - RG1[0]
+        }
+        //ap.ethg++ <--> C <--> r1.ethg++; //edge1[1]
+        //Edge1.ethg++ <--> C <--> r1.ethg++; //edge1[1]
         Sw.ethg++ <--> C <--> SP1.ethg++;
         Sw.ethg++ <--> C <--> SP2.ethg++;
+        //test.ethg++ <--> C <--> Edge1.ethg++;
+
 }

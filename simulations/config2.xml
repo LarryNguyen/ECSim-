@@ -2,10 +2,11 @@
   <interface hosts="Enoma" address="4.4.4.4" netmask="255.255.255.0" />
   <interface hosts="SP1" address="5.5.5.1" netmask="255.255.255.0" />
   <interface hosts="SP2" address="5.5.5.2" netmask="255.255.255.0" />
-  <interface hosts="ue" address="192.168.1.2" netmask="255.255.255.0" />
-  
+  <interface hosts="ue*" address="192.168.1.x" netmask="255.255.255.0" />
+
   <interface hosts="Edge1" names="eth0" address="192.168.2.99" netmask="255.255.255.0" />
-  <interface hosts="Edge1" names="eth1" address="192.168.1.1" netmask="255.255.255.0" />
+  <interface hosts="Edge1" names="eth1" address="192.168.1.x" netmask="255.255.255.0" />
+  
   <interface hosts="Edge2" names="eth0" address="172.0.1.1" netmask="255.255.255.0" />
   <interface hosts="Edge3" names="eth0" address="172.0.2.1" netmask="255.255.255.0" />
 
@@ -27,7 +28,7 @@
   <route hosts="SP1" destination="*" gateway="Core"/>
   <route hosts="SP2" destination="*" gateway="Core"/>
   <route hosts="ue" destination="*" gateway="Edge1"/>
-
+  
   <route hosts="Edge1" destination="4.4.4.0" gateway="RG1" netmask="255.255.255.0" interface="eth0"/>
   <route hosts="Edge1" destination="5.5.5.0" gateway="RG1" netmask="255.255.255.0" interface="eth0"/>
   <route hosts="Edge1" destination="192.168.1.0" netmask="255.255.255.0" interface="eth1"/>

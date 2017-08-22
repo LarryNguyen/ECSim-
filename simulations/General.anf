@@ -6,9 +6,9 @@
   </inputs>
   <datasets>
     <datasets name="test">
-      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge1.energyStorage) AND name(residualEnergyCapacity:vector)" type="VECTOR"/>
-      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge2.energyStorage) AND name(residualEnergyCapacity:vector)" type="VECTOR"/>
-      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge3.energyStorage) AND name(residualEnergyCapacity:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge1.energyConsumer) AND name(powerConsumption:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge2.energyConsumer) AND name(powerConsumption:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/MEC_Sim/simulations/results/General-#0.vec) AND attr:configname(General) AND attr:runnumber(0) AND module(mec.Edge3.energyConsumer) AND name(powerConsumption:vector)" type="VECTOR"/>
       <items xsi:type="scave:LineChart" name="test" lineNameFormat="">
         <properties name="Line.Name/mec.Edge3.energyStorage" value="mec.Edge3.energyStorage"/>
         <properties name="Line.Name/mec.Edge2.energyStorage" value="mec.Edge2.energyStorage"/>

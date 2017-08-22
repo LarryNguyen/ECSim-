@@ -34,7 +34,11 @@ import inet.node.ethernet.Eth100M;
 network mec
 {
     parameters:
-        int numHosts = 10;
+        int numHostsE1 = 3;
+        int numHostsE2 = 2;
+        int numHostsE3 = 3;
+
+        int numServices = 5;
         **.mgmt.numChannels = 1;
         @display("bgb=699,481");
     types:
@@ -56,7 +60,7 @@ network mec
         }
         configurator: IPv4NetworkConfigurator {
             parameters:
-                config = xmldoc("config2.xml");
+                config = xmldoc("config3.xml");
                 addStaticRoutes = true;
                 addDefaultRoutes = true;
                 @display("p=103,24");
@@ -69,8 +73,14 @@ network mec
             @display("p=214,272;i=device/antennatower");
         }
 
-        SP1: StandardHost {
-            @display("p=405,24;i=device/server");
+        //SP1: StandardHost {
+        //    @display("p=405,24;i=device/server");
+        //}
+        //SP2: StandardHost {
+        //    @display("p=518,24;i=device/server");
+        //}
+        SP[numServices]: StandardHost {
+            @display("is=s;p=372,17,r;i=device/server");
         }
         Enoma: StandardHost {
             @display("p=234,24;i=device/server");
@@ -91,9 +101,17 @@ network mec
         Edge3: EdgeNode {
             @display("p=573,231;i=device/antennatower");
         }
-        ue[numHosts]: StandardHost {
-            //@display("p=55,391,r;i=device/cellphone");
-            @display("is=s;p=,r;i=device/cellphone");
+        ue1[numHostsE1]: StandardHost {
+            @display("is=s;p=17,428,r;i=device/cellphone");
+            //@display("p=,r;i=device/cellphone");
+        }
+        ue2[numHostsE2]: StandardHost {
+            @display("is=s;p=340,398,r;i=device/cellphone");
+            //@display("p=,r;i=device/cellphone");
+        }
+        ue3[numHostsE3]: StandardHost {
+            @display("is=s;p=608,428,r;i=device/cellphone");
+            //@display("p=,r;i=device/cellphone");
         }
 		//ue: WirelessHost {
         //    @display("r=,,#707070;p=129,394");
@@ -101,9 +119,7 @@ network mec
         //ap: AccessPoint {
         //    @display("p=143,350");
         //}
-        SP2: StandardHost {
-            @display("p=518,24;i=device/server");
-        }
+
         Sw: EtherSwitch {
             @display("p=462,85");
         }
@@ -117,7 +133,13 @@ network mec
         //    @display("p=208,332");
         //}
         sw1: EtherSwitch {
-            @display("p=83,388");
+            @display("p=151,349");
+        }
+        sw2: EtherSwitch {
+            @display("p=383,349");
+        }
+        sw3: EtherSwitch {
+            @display("p=622,315");
         }
     connections:
 
@@ -130,13 +152,22 @@ network mec
         RG1.ethg++ <--> C <--> RG2.ethg++; //RG1[3] - RG2[1]
         RG2.ethg++ <--> C <--> Edge3.ethg++; //RG2[2] - Edge3[0]
         Edge1.ethg++ <--> C <--> sw1.ethg++;
-        for i=0..numHosts-1 {
-            sw1.ethg++ <--> C <--> ue[i].ethg++; //edge1[1] - RG1[0]
+        Edge2.ethg++ <--> C <--> sw2.ethg++;
+        Edge3.ethg++ <--> C <--> sw3.ethg++;
+        for i=0..numHostsE1-1 {
+            sw1.ethg++ <--> C <--> ue1[i].ethg++;
         }
-        //ap.ethg++ <--> C <--> r1.ethg++; //edge1[1]
-        //Edge1.ethg++ <--> C <--> r1.ethg++; //edge1[1]
-        Sw.ethg++ <--> C <--> SP1.ethg++;
-        Sw.ethg++ <--> C <--> SP2.ethg++;
-        //test.ethg++ <--> C <--> Edge1.ethg++;
+        for i=0..numHostsE2-1 {
+            sw2.ethg++ <--> C <--> ue2[i].ethg++;
+        }
+        for i=0..numHostsE3-1 {
+            sw3.ethg++ <--> C <--> ue3[i].ethg++;
+        }
+        for i=0..numServices-1 {
+            Sw.ethg++ <--> C <--> SP[i].ethg++;
+        }
+        //Sw.ethg++ <--> C <--> SP1.ethg++;
+        //Sw.ethg++ <--> C <--> SP2.ethg++;
+
 
 }

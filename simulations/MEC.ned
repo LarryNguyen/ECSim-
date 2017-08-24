@@ -30,15 +30,17 @@ import inet.common.misc.ThruputMeteringChannel;
 import inet.networklayer.ipv4.IPv4ServiceTable;
 import mec_sim.EdgeNode;
 import inet.node.ethernet.Eth100M;
+import inet.common.scenario.ScenarioManager;
 
 network mec
 {
     parameters:
-        int numHostsE1 = 3;
-        int numHostsE2 = 2;
-        int numHostsE3 = 3;
+        int numHostsE1 = default(1);
+        int numHostsE2 = default(1);
+        int numHostsE3 = default(1);
 
-        int numServices = 5;
+        int numServices = default(1);
+
         **.mgmt.numChannels = 1;
         @display("bgb=699,481");
     types:
@@ -56,14 +58,18 @@ network mec
     submodules:
         visualizer: <default("IntegratedCanvasVisualizer")> like IIntegratedVisualizer if hasVisualizer() {
             parameters:
-                @display("p=46,24");
+                @display("p=34,24");
+        }
+        scenarioManager: ScenarioManager {
+            parameters:
+                @display("p=34,110");
         }
         configurator: IPv4NetworkConfigurator {
             parameters:
                 config = xmldoc("config3.xml");
                 addStaticRoutes = true;
                 addDefaultRoutes = true;
-                @display("p=103,24");
+                @display("p=34,155");
         }
         //radioMedium: Ieee80211ScalarRadioMedium {
         //    parameters:

@@ -1,0 +1,3 @@
+networklayer/ipv4/IPv4ServiceTable.cc:106:        EV << "LARRY ~~~ service->getServiceIp() = " << service->getServiceIp() << "\n";
+networklayer/ipv4/IPv4ServiceTable.cc:107:        if(service->getServiceIp().getInt() == serviceDest.getInt())
+networklayer/ipv4/IPv4ServiceTable.cc:121:        EV << "LARRY ~~~ serviceName = " << service->getServiceName() <<"serviceIp = " << service->getServiceIp()<< "\n";

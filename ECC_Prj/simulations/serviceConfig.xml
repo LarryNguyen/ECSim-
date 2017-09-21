@@ -1,0 +1,5 @@
+<config>
+  <edge-service hosts="Edge1" services=""/>
+  <edge-service hosts="Edge2" services=""/>
+  <edge-service hosts="RG2" services=""/>
+</config> 

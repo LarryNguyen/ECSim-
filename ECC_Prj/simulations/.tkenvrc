@@ -1,0 +1,16 @@
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "ICN_Network.psRouter[10].ethg$i[0]" "cGate" "2" "378x343+2453+427:normal"
+inspector "ICN_Network" "ICN_Network" "2" "1678x976+-8+17:normal"
+inspector "PubSub_Network.Pub_Sub[2].eth[0]" "EthernetInterface2" "2" "673x342+2+79:normal"
+inspector "simulation.scheduled-events.PSmsg-425-145758" "EthernetIIFrame" "1" "686x503+993+46:normal"
+inspector "simulation.scheduled-events.PSmsg-425-61332" "PSEtherAppMsg" "1" "687x388+1+46:normal"
+inspector "PubSub_Network.Pub_Sub[0]" "PubHost" "2" "607x342+1072+52:normal"
+inspector "simulation.scheduled-events.PSmsg-425-47923" "PSEtherAppMsg" "1" "483x315+1040+707:normal"
+inspector "simulation.scheduled-events.PSmsg-325-2" "EthernetIIFrame" "1" "460x315+1+455:normal"
+inspector "PubSub_Net.iiTable" "IITable" "1" "1278x992+1681+27:normal"
+inspector "PubSub_Net" "PubSub_Net" "2" "872x658+406+257:normal"
+inspector "PubSub_Network.psRouter[9].eth[0].queue.l2queue.PSmsg-400-60800" "PSEtherAppMsg" "1" "601x315+149+427:normal"
+inspector "simulation.scheduled-events.req-167-1" "PSEtherAppReq" "1" "460x315+1169+482:normal"
+inspector "PubSub_Network.Publishers[2]" "PubHost" "2" "607x342+3+106:normal"
+inspector "PubSub_Network.Pub_Sub[0].eth[0]" "EthernetInterface2" "2" "673x342+1006+678:normal"
+
